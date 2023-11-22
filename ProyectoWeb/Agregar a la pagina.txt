@@ -93,3 +93,5 @@ function borrarTipo($codtip, $conn) {
 // Cerrar la conexión
 $conn->close();
 ?>
+
+https://www.spreadthesign.com/es.es/search/
