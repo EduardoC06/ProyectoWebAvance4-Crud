@@ -1,2 +1,95 @@
 Agregar IA en consulta de cervezas artesanales( este dira precios, cuanto alcohol tiene etc) agregar tambien cookies
 Crear la base de datos bd_jugueteria y contruir una aplicacion que permita ingregar listar y borrar los datos de las tipo y productos
+
+<?php
+// Conexión a la base de datos
+$servername = "tu_servidor";
+$username = "tu_usuario";
+$password = "tu_contraseña";
+$dbname = "bd_jugueteria";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Verificar la conexión
+if ($conn->connect_error) {
+    die("Conexión fallida: " . $conn->connect_error);
+}
+
+// Crear tabla "tipos"
+$sql_tipos = "CREATE TABLE IF NOT EXISTS tipos (
+    codtip INT AUTO_INCREMENT PRIMARY KEY,
+    costip VARCHAR(50),
+    nomtip VARCHAR(50)
+)";
+
+if ($conn->query($sql_tipos) === TRUE) {
+    echo "Tabla 'tipos' creada exitosamente.<br>";
+} else {
+    echo "Error al crear la tabla 'tipos': " . $conn->error . "<br>";
+}
+
+// Crear tabla "productos"
+$sql_productos = "CREATE TABLE IF NOT EXISTS productos (
+    codpro INT AUTO_INCREMENT PRIMARY KEY,
+    compro VARCHAR(50),
+    nompro VARCHAR(50),
+    prepro DECIMAL(10, 2),
+    cantpro INT,
+    fotpro VARCHAR(255),
+    codtip INT,
+    FOREIGN KEY (codtip) REFERENCES tipos(codtip)
+)";
+
+if ($conn->query($sql_productos) === TRUE) {
+    echo "Tabla 'productos' creada exitosamente.<br>";
+} else {
+    echo "Error al crear la tabla 'productos': " . $conn->error . "<br>";
+}
+
+// Función para ingresar tipo
+function ingresarTipo($costip, $nomtip, $conn) {
+    $sql = "INSERT INTO tipos (costip, nomtip) VALUES ('$costip', '$nomtip')";
+
+    if ($conn->query($sql) === TRUE) {
+        echo "Tipo ingresado exitosamente.<br>";
+    } else {
+        echo "Error al ingresar tipo: " . $conn->error . "<br>";
+    }
+}
+
+// Función para listar tipos
+function listarTipos($conn) {
+    $sql = "SELECT * FROM tipos";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        echo "<h2>Listado de Tipos:</h2>";
+        echo "<ul>";
+        while ($row = $result->fetch_assoc()) {
+            echo "<li>Código: " . $row["codtip"] . ", Costo: " . $row["costip"] . ", Nombre: " . $row["nomtip"] . "</li>";
+        }
+        echo "</ul>";
+    } else {
+        echo "No hay tipos registrados.<br>";
+    }
+}
+
+// Función para borrar tipo
+function borrarTipo($codtip, $conn) {
+    $sql = "DELETE FROM tipos WHERE codtip = $codtip";
+
+    if ($conn->query($sql) === TRUE) {
+        echo "Tipo eliminado exitosamente.<br>";
+    } else {
+        echo "Error al borrar tipo: " . $conn->error . "<br>";
+    }
+}
+
+// Ejemplo de uso:
+// ingresarTipo('Alta', 'Juguetes educativos', $conn);
+// listarTipos($conn);
+// borrarTipo(1, $conn);
+
+// Cerrar la conexión
+$conn->close();
+?>
