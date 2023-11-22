@@ -1,1 +1,2 @@
 Agregar IA en consulta de cervezas artesanales( este dira precios, cuanto alcohol tiene etc) agregar tambien cookies
+Crear la base de datos bd_jugueteria y contruir una aplicacion que permita ingregar listar y borrar los datos de las tipo y productos
